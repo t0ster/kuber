@@ -1,0 +1,5 @@
+.vagrant
+kuber-stack
+ui
+.DS_Store
+telepresence.log
