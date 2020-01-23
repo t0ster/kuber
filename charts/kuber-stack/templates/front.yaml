@@ -1,0 +1,55 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-ui
+  labels:
+    {{- include "kuber-stack.labels" . | nindent 4 }}
+    app: ui
+spec:
+  # replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "kuber-stack.selectorLabels" . | nindent 6 }}
+      app: ui
+  template:
+    metadata:
+      labels:
+        {{- include "kuber-stack.selectorLabels" . | nindent 8 }}
+        app: ui
+    spec:
+    {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      containers:
+        - name: ui
+          # image: "{{ .Values.image.repository }}:{{ .Chart.AppVersion }}"
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - name: REACT_APP_HOST
+              value: {{ .Values.host }}
+            - name: REACT_APP_PARSE_URL
+              value: "http://{{ .Values.host }}/parse"
+          # command: ["/bin/sh"]
+          # args: ["-c", "tail -f /dev/null"]
+          ports:
+            - containerPort: 3000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-ui
+  labels:
+    {{- include "kuber-stack.labels" . | nindent 4 }}
+    app: ui
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: 3000
+      targetPort: 3000
+  selector:
+    {{- include "kuber-stack.selectorLabels" . | nindent 4 }}
+    app: ui
+---

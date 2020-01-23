@@ -1,5 +1,4 @@
-.vagrant
-kuber-stack
-ui
+/.vagrant
+/ui
 .DS_Store
 telepresence.log

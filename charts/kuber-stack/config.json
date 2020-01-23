@@ -1,0 +1,13 @@
+{
+  "serverURL": "http://192.168.99.101.nip.io/parse",
+  "databaseURI": "mongodb://ui-mongodb/parse",
+  "masterKey": "yfdsadnsafd9dds8774",
+  "appId": "APP1",
+  "auth": {
+    "oauth2": {
+      "oauth2": true,
+      "tokenIntrospectionEndpointUrl": "https://dev-503416.okta.com/oauth2/default/v1/introspect",
+      "authorizationHeader": "Basic MG9hMmUwcTBvZlRsTjdFMUMzNTc6MFVaQ19ZR21ueko5cjBMMXlJbm4xYjBOSy1SUWRwMG9qVktxdmlDQQ=="
+    }
+  }
+}

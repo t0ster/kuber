@@ -1,0 +1,61 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-parse-dashboard
+  labels:
+    {{- include "kuber-stack.labels" . | nindent 4 }}
+    app: parse-dashboard
+spec:
+  # replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "kuber-stack.selectorLabels" . | nindent 6 }}
+      app: parse-dashboard
+  template:
+    metadata:
+      labels:
+        {{- include "kuber-stack.selectorLabels" . | nindent 8 }}
+        app: parse-dashboard
+    spec:
+    {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      containers:
+        - name: parse-dashboard
+          # image: "{{ .Values.image.repository }}:{{ .Chart.AppVersion }}"
+          image: parseplatform/parse-dashboard
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - name: PARSE_DASHBOARD_SERVER_URL
+              value: http://{{ .Values.host }}/parse
+            - name: PARSE_DASHBOARD_TRUST_PROXY
+              value: '1'
+            - name: PARSE_DASHBOARD_MASTER_KEY
+              value: yfdsadnsafd9dds8774
+            - name: PARSE_DASHBOARD_APP_ID
+              value: APP1
+            - name: PARSE_DASHBOARD_USER_ID
+              value: admin
+            - name: PARSE_DASHBOARD_USER_PASSWORD
+              value: '19891010'
+          ports:
+            - containerPort: 4040
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-parse-dashboard
+  labels:
+    {{- include "kuber-stack.labels" . | nindent 4 }}
+    app: parse-dashboard
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: 4040
+      targetPort: 4040
+  selector:
+    {{- include "kuber-stack.selectorLabels" . | nindent 4 }}
+    app: parse-dashboard
+---

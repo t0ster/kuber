@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-parse-server-config
+data:
+  configuration.json: |
+    {
+      "serverURL": "http://{{ .Values.host }}/parse",
+      "databaseURI": "mongodb://{{ .Release.Name }}-mongodb/parse",
+      "masterKey": "yfdsadnsafd9dds8774",
+      "appId": "APP1"
+    }
+
+# "auth": {
+#   "okta": {
+#     "oauth2": true,
+#     "tokenIntrospectionEndpointUrl": "https://dev-503416.okta.com/oauth2/default/v1/introspect",
+#     "authorizationHeader": "Basic MG9hMmUwcTBvZlRsTjdFMUMzNTc6MFVaQ19ZR21ueko5cjBMMXlJbm4xYjBOSy1SUWRwMG9qVktxdmlDQQ=="
+#   }
+# }

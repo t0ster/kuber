@@ -1,0 +1,47 @@
+{{- $fullName := include "kuber-stack.fullname" . -}}
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: {{ $fullName }}
+  labels:
+    {{- include "kuber-stack.labels" . | nindent 4 }}
+spec:
+{{- if .Values.ingress.tls }}
+  tls:
+    - hosts:
+      - {{ .Values.host }}
+      secretName: ssl
+{{- end }}
+  rules:
+    - host: {{ .Values.host }}
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: {{ .Release.Name }}-ui
+              servicePort: 3000
+          - path: /parse
+            backend:
+              serviceName: {{ .Release.Name }}-parse-server
+              servicePort: 1337
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: {{ .Release.Name }}-parse-dashboard
+  labels:
+    {{- include "kuber-stack.labels" . | nindent 4 }}
+spec:
+  tls:
+    - hosts:
+      - dashboard.{{ .Values.host }}
+      # secretName: ssl
+  rules:
+    - host: dashboard.{{ .Values.host }}
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: {{ .Release.Name }}-parse-dashboard
+              servicePort: 4040
+---

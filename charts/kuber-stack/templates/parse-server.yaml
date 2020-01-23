@@ -1,0 +1,57 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-parse-server
+  labels:
+    {{- include "kuber-stack.labels" . | nindent 4 }}
+    app: parse-server
+spec:
+  # replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "kuber-stack.selectorLabels" . | nindent 6 }}
+      app: parse-server
+  template:
+    metadata:
+      labels:
+        {{- include "kuber-stack.selectorLabels" . | nindent 8 }}
+        app: parse-server
+    spec:
+    {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      containers:
+        - name: parse-server
+          # image: "{{ .Values.image.repository }}:{{ .Chart.AppVersion }}"
+          image: parseplatform/parse-server
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          args: ["/parse-server/configuration.json"]
+          volumeMounts:
+          - mountPath: /parse-server/configuration.json
+            name: parse-server-config
+            subPath: configuration.json
+          ports:
+            - containerPort: 1337
+      volumes:
+        - name: parse-server-config
+          configMap:
+            name: {{ .Release.Name }}-parse-server-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-parse-server
+  labels:
+    {{- include "kuber-stack.labels" . | nindent 4 }}
+    app: parse-server
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: 1337
+      targetPort: 1337
+  selector:
+    {{- include "kuber-stack.selectorLabels" . | nindent 4 }}
+    app: parse-server
+---

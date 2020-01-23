@@ -1,0 +1,27 @@
+deploy:
+  stage: deploy
+  image:
+    name: dtzar/helm-kubectl
+  script:
+    - helm template kuber . --set image.repository=$UPSTREAM_REGISTRY_IMAGE,image.tag=$UPSTREAM_TAG,host=$UPSTREAM_TAG.$HOST > kuber.yaml
+    - kubectl create namespace $UPSTREAM_TAG || true
+    - kubectl -n $UPSTREAM_TAG apply -f kuber.yaml
+  environment:
+    name: $UPSTREAM_TAG
+    url: http://$UPSTREAM_TAG.$HOST
+  only:
+    variables:
+      - $UPSTREAM_REGISTRY_IMAGE != null
+
+deploy_:
+  stage: deploy
+  image:
+    name: dtzar/helm-kubectl
+  script:
+    - helm template kuber . --set image.repository=registry.gitlab.com/t0ster/kuber-ui,image.tag=latest,host=staging.$HOST > kuber.yaml
+    - kubectl -n default apply -f kuber.yaml
+  only:
+    variables:
+      - $UPSTREAM_REGISTRY_IMAGE == null
+  environment:
+    name: staging
