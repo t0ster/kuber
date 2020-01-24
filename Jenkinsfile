@@ -1,5 +1,12 @@
-node {
-    stage('Build') {
-        sh 'cat Dockerfile'
+pipeline {
+    agent any
+    stages {
+        stage('Build') {
+            steps {
+                script {
+                  sh 'cat Dockerfile'
+                }
+            }
+        }
     }
 }
