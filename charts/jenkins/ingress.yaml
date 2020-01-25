@@ -1,0 +1,22 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  labels:
+    app.kubernetes.io/component: jenkins-master
+    app.kubernetes.io/instance: jenkins
+    app.kubernetes.io/name: jenkins
+  name: jenkins
+spec:
+  rules:
+  - host: ci.172.28.128.17.nip.io
+    http:
+      paths:
+      - backend:
+          serviceName: jenkins
+          servicePort: 8080
+  - host: devops.eu.ngrok.io
+    http:
+      paths:
+      - backend:
+          serviceName: jenkins
+          servicePort: 8080

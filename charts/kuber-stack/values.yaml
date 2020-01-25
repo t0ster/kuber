@@ -5,7 +5,7 @@
 replicaCount: 1
 
 image:
-  repository: registry.gitlab.com/t0ster/kuber-ui
+  repository: t0ster/kuber-ui
   pullPolicy: IfNotPresent
   tag: latest
 
