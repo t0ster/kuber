@@ -1,4 +1,5 @@
 /.vagrant
 /ui
+/gitops
 .DS_Store
 telepresence.log
