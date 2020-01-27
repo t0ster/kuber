@@ -9,7 +9,7 @@ image:
   pullPolicy: IfNotPresent
   tag: latest
 
-release: 00000
+release: "00000"
 
 imagePullSecrets: []
 nameOverride: ""
