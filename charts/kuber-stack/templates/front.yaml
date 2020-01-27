@@ -17,6 +17,8 @@ spec:
       labels:
         {{- include "kuber-stack.selectorLabels" . | nindent 8 }}
         app: ui
+      annotations:
+        release: "{{ .Values.release }}"
     spec:
     {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
