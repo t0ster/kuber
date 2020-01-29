@@ -24,9 +24,8 @@ spec:
     {{- end }}
       containers:
         - name: parse-dashboard
-          # image: "{{ .Values.image.repository }}:{{ .Chart.AppVersion }}"
           image: parseplatform/parse-dashboard
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          imagePullPolicy: IfNotPresent
           env:
             - name: PARSE_DASHBOARD_SERVER_URL
               value: http://{{ .Values.host }}/parse

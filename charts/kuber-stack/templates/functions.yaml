@@ -2,55 +2,53 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Release.Name }}-parse-server
+  name: {{ .Release.Name }}-functions
   labels:
     {{- include "kuber-stack.labels" . | nindent 4 }}
-    app: parse-server
+    app: functions
 spec:
   # replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
       {{- include "kuber-stack.selectorLabels" . | nindent 6 }}
-      app: parse-server
+      app: functions
   template:
     metadata:
       labels:
         {{- include "kuber-stack.selectorLabels" . | nindent 8 }}
-        app: parse-server
+        app: functions
+      annotations:
+        release: "{{ .Values.release }}"
     spec:
     {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
     {{- end }}
       containers:
-        - name: parse-server
-          image: parseplatform/parse-server
-          imagePullPolicy: IfNotPresent
-          args: ["/parse-server/configuration.json"]
-          volumeMounts:
-          - mountPath: /parse-server/configuration.json
-            name: parse-server-config
-            subPath: configuration.json
+        - name: functions
+          image: "{{ .Values.functions.image.repository }}:{{ .Values.functions.image.tag }}"
+          imagePullPolicy: {{ .Values.functions.image.pullPolicy }}
+          env:
+            - name: APP_PATH
+              value: {{ .Values.functions.path }}
+          # command: ["/bin/sh"]
+          # args: ["-c", "tail -f /dev/null"]
           ports:
-            - containerPort: 1337
-      volumes:
-        - name: parse-server-config
-          configMap:
-            name: {{ .Release.Name }}-parse-server-config
+            - containerPort: 5000
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ .Release.Name }}-parse-server
+  name: {{ .Release.Name }}-functions
   labels:
     {{- include "kuber-stack.labels" . | nindent 4 }}
-    app: parse-server
+    app: functions
 spec:
   type: {{ .Values.service.type }}
   ports:
-    - port: 1337
-      targetPort: 1337
+    - port: 5000
+      targetPort: 5000
   selector:
     {{- include "kuber-stack.selectorLabels" . | nindent 4 }}
-    app: parse-server
+    app: functions
 ---

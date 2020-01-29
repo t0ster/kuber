@@ -1,5 +1,11 @@
 /.vagrant
 /ui
 /gitops
+/functions
+.terraform
+*.tfstate
+*.tfstate.backup
+*.auto.tfvars
+terraform/google-account.json
 .DS_Store
 telepresence.log

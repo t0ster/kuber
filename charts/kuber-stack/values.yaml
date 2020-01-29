@@ -4,12 +4,22 @@
 
 replicaCount: 1
 
-image:
-  repository: t0ster/kuber-ui
-  pullPolicy: IfNotPresent
-  tag: latest
+ui:
+  image:
+    repository: t0ster/kuber-ui
+    pullPolicy: IfNotPresent
+    tag: latest
 
-release: "00000"
+  release: "00000"
+
+functions:
+  image:
+    repository: t0ster/kuber-functions
+    pullPolicy: IfNotPresent
+    tag: latest
+
+  path: /functions
+  release: "00000"
 
 imagePullSecrets: []
 nameOverride: ""

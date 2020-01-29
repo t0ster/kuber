@@ -24,9 +24,8 @@ spec:
     {{- end }}
       containers:
         - name: mongodb
-          # image: "{{ .Values.image.repository }}:{{ .Chart.AppVersion }}"
           image: mongo
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 27017
 ---

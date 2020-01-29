@@ -24,6 +24,10 @@ spec:
             backend:
               serviceName: {{ .Release.Name }}-parse-server
               servicePort: 1337
+          - path: {{ .Values.functions.path }}
+            backend:
+              serviceName: {{ .Release.Name }}-functions
+              servicePort: 5000
 ---
 apiVersion: extensions/v1beta1
 kind: Ingress
