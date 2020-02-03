@@ -2,6 +2,7 @@
 /ui
 /gitops
 /functions
+/deployer
 .terraform
 *.tfstate
 *.tfstate.backup
