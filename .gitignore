@@ -3,6 +3,7 @@
 /gitops
 /functions
 /deployer
+/selenium
 .terraform
 *.tfstate
 *.tfstate.backup

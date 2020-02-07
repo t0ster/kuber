@@ -42,6 +42,33 @@ resource "google_container_node_pool" "primary" {
   }
 }
 
+resource "google_container_node_pool" "pool_2" {
+  name       = "node-pool-2"
+  location = "europe-west2-a"
+  cluster    = google_container_cluster.primary.name
+  initial_node_count = 0
+  autoscaling {
+    min_node_count = 0
+    max_node_count = 1
+  }
+
+  node_config {
+    preemptible  = true
+    machine_type = "n1-standard-2"
+    taint = [
+      {
+        key    = "preemptible"
+        value  = true
+        effect = "NO_SCHEDULE"
+      }
+    ]
+
+    metadata = {
+      disable-legacy-endpoints = "true"
+    }
+  }
+}
+
 data "google_compute_network" "default" {
   name = "default"
 }
