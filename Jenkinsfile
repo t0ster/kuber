@@ -1,20 +1,15 @@
-def label = "build-jenkins-operator-${UUID.randomUUID().toString()}"
-// def home = "/home/jenkins"
-// def workspace = "${home}/workspace/build-jenkins-operator"
-
-def branch = "master"
-def uiTag = "master"
-def functionsTag = "master"
-def seleniumTag = "master"
+def branch = BRANCH_NAME
+def uiTag = branch
+def functionsTag = branch
+def seleniumTag = branch
 
 
-podTemplate(label: label,
+podTemplate(
         containers: [
                 containerTemplate(name: 'jnlp', image: 'jenkins/jnlp-slave'),
                 containerTemplate(name: 'builder', image: 't0ster/build-deploy', command: 'cat', ttyEnabled: true, envVars: [
                     envVar(key: 'DOCKER_HOST', value: 'tcp://dind:2375')
                 ]),
-                // containerTemplate(name: 'kuber-functions', alwaysPullImage: true, image: 't0ster/kuber-functions:${functionsTag}', command: 'cat', ttyEnabled: true),
                 containerTemplate(name: 'selenium', alwaysPullImage: true, image: "t0ster/kuber-selenium:${seleniumTag}", command: 'cat', ttyEnabled: true, envVars: [
                     envVar(key: 'SELENIUM_HOST', value: 'zalenium'),
                     envVar(key: 'BASE_URL', value: "http://${branch}.kuber.35.246.75.225.nip.io"),
@@ -23,20 +18,10 @@ podTemplate(label: label,
         ],
         serviceAccount: 'jenkins-operator-jenkins'
 ) {
-    node(label) {
+    node(POD_LABEL) {
         stage('Build') {
             echo 'Build...'
             sh 'env'
-            // container('builder') {
-            //     dir ('functions') {
-            //         git branch: 'master', changelog: false, poll: false, url: 'https://github.com/t0ster/kuber-functions.git'
-            //         docker.withRegistry('', 'dockerhub-registry') {
-            //           def customImage = docker.build("t0ster/kuber-functions:master")
-            //           customImage.push()
-            //         //   sh "docker rmi t0ster/kuber-functions:master"
-            //         }
-            //     }
-            // }
         }
         stage('Deploy') {
             def patchOrg = """
