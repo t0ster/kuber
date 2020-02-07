@@ -1,6 +1,6 @@
 def label = "build-jenkins-operator-${UUID.randomUUID().toString()}"
-def home = "/home/jenkins"
-def workspace = "${home}/workspace/build-jenkins-operator"
+// def home = "/home/jenkins"
+// def workspace = "${home}/workspace/build-jenkins-operator"
 
 def branch = "master"
 def uiTag = "master"
