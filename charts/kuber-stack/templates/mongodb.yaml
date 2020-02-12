@@ -37,7 +37,7 @@ metadata:
     {{- include "kuber-stack.labels" . | nindent 4 }}
     app: mongodb
 spec:
-  type: LoadBalancer
+  type: {{ .Values.service.type }}
   ports:
     - port: 27017
       targetPort: 27017

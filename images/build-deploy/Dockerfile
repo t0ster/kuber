@@ -14,6 +14,7 @@ RUN mv ./kubectl /usr/local/bin/kubectl
 
 
 FROM alpine
+RUN apk add --no-cache bash git
 COPY --from=0 /usr/local/bin/docker /usr/local/bin/docker
 COPY --from=0 /usr/local/bin/helm /usr/local/bin/helm
 COPY --from=0 /usr/local/bin/kubectl /usr/local/bin/kubectl

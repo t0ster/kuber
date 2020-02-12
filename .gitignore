@@ -8,6 +8,6 @@
 *.tfstate
 *.tfstate.backup
 *.auto.tfvars
-terraform/google-account.json
+google-account.json
 .DS_Store
 telepresence.log
