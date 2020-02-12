@@ -4,6 +4,7 @@
 /functions
 /deployer
 /selenium
+/cicd
 .terraform
 *.tfstate
 *.tfstate.backup
