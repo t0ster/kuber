@@ -31,6 +31,11 @@ resource "helm_release" "ingress" {
 
   namespace = kubernetes_namespace.ingress.metadata[0].name
 
+  set_string {
+    name  = "controller.resources.requests.cpu"
+    value = "15m"
+  }
+
   set {
     name  = "rbac.create"
     value = "true"
