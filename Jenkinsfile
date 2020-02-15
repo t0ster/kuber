@@ -18,7 +18,7 @@ podTemplate(
                     "namespace": "stg",
                     "branch": "${BRANCH_NAME}",
                     "values": {
-                        "host": "stg.kuber.35.246.75.225.nip.io".
+                        "host": "stg.kuber.35.246.75.225.nip.io",
                         "ui": {
                             "image": {
                                 "pullPolicy": "Always",
@@ -30,7 +30,7 @@ podTemplate(
                                 "pullPolicy": "Always",
                                 "release": "kuber-${BRANCH_NAME}-${BUILD_ID}"
                             }
-                        },
+                        }
                     }
                 }
             """
