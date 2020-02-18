@@ -28,11 +28,10 @@ spec:
         - name: ui
           image: "{{ .Values.ui.image.repository }}:{{ .Values.ui.image.tag }}"
           imagePullPolicy: {{ .Values.ui.image.pullPolicy }}
-          env:
-            - name: REACT_APP_HOST
-              value: {{ .Values.host }}
-            - name: REACT_APP_PARSE_URL
-              value: "http://{{ .Values.host }}/parse"
+          volumeMounts:
+          - mountPath: /usr/share/nginx/html/env-config.js
+            name: env-config
+            subPath: env-config.js
           # command: ["/bin/sh"]
           # args: ["-c", "tail -f /dev/null"]
           ports:
@@ -43,6 +42,10 @@ spec:
               port: 3000
             initialDelaySeconds: 3
             periodSeconds: 3
+      volumes:
+        - name: env-config
+          configMap:
+            name: {{ .Release.Name }}-ui-config
 ---
 apiVersion: v1
 kind: Service

@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-ui-config
+data:
+  env-config.js: |
+    {
+      "REACT_APP_HOST": "{{ .Values.host }}",
+      "REACT_APP_PARSE_URL": "http://{{ .Values.host }}/parse"
+    }
