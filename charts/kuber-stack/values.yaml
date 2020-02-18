@@ -8,7 +8,7 @@ ui:
   image:
     repository: t0ster/kuber-ui
     pullPolicy: IfNotPresent
-    tag: v0.0.3
+    tag: v0.0.4
 
   release: "00000"
 
