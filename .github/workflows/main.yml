@@ -10,4 +10,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: echo
-        run: echo ${{ github.event.inputs.source }}
+        run: echo ${{ fromJson(github.event.inputs.source).eventName }}
