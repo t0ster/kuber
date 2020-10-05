@@ -1,8 +1,13 @@
 name: Processor
-on: [workflow_dispatch]
+on:
+  workflow_dispatch:
+    inputs:
+      source:
+        description: "Source github context"
+        required: true
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - name: echo
-        run: echo ${{ toJSON(github) }}
+        run: echo ${{ toJSON(github.event.inputs.source) }}
